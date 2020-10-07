@@ -4,18 +4,21 @@ import random
 
 # IA: Intervalo entre arribos de llamadas de clientes en minutos
 def ia():
-    # ...
-    return 0
+    R = generar_random()
+    ia = pow((pow(1-R,1/-4.7695)-1)*pow(1719,1.387),1/1.387)
+    return ia
 
 # TFM: Tiempo de fin fabricacion de muebles en minutos
 def tff():
-    # ...
-    return 0
+    R = generar_random()
+    tff = (30*R)+75
+    return tff
 
 # CP: Cantidad pedida de muebles en unidades/pedido
 def cp():
-    #...
-    return 0
+    R = generar_random()
+    cp = math.log((1-R)/0.91947,0.91947)
+    return cp
 
 def generar_random():
     return random.uniform(0, 1)
