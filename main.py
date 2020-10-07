@@ -4,7 +4,12 @@ import random
 
 # IA: Intervalo entre arribos de llamadas de clientes en minutos
 def ia():
-    R = generar_random()
+    flag = true
+    while flag == true:
+        R = round(generar_random(),2)
+        if R != 0.00 and R != 1.00:
+            flag = false
+            
     ia = pow((pow(1-R,1/-4.7695)-1)*pow(1719,1.387),1/1.387)
     return ia
 
@@ -16,8 +21,17 @@ def tff():
 
 # CP: Cantidad pedida de muebles en unidades/pedido
 def cp():
-    R = generar_random()
-    cp = math.log((1-R)/0.91947,0.91947)
+    flag1 = true
+    flag2 = true
+    while flag1 == true:
+        R = round(generar_random(),4)
+        if R != 0.0000 and R != 1.0000:
+            flag1 = false
+    
+    while flag2 == true:
+        cp = round(math.log((1-R)/0.91947,0.91947))
+        if cp >= 1:
+            flag2 = false
     return cp
 
 def generar_random():
