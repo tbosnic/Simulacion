@@ -1,21 +1,43 @@
 import random
+import math
+import sys
 
+sys.setrecursionlimit(90000)
 # --------------- FDPs ---------------
 
 # IA: Intervalo entre arribos de llamadas de clientes en minutos
 def ia():
-    # ...
-    return 0
+    R = generar_random_precision_ia()
+    #print("R ia", R)
+    return pow((pow(1-R, 1/-4.7695)-1) * pow(1719, 1.387), 1/1.387)
 
 # TFM: Tiempo de fin fabricacion de muebles en minutos
 def tff():
-    # ...
-    return 0
+    R = generar_random()
+    return (30 * R) + 75
 
 # CP: Cantidad pedida de muebles en unidades/pedido
 def cp():
-    #...
-    return 0
+    R = generar_random_precision_cp()
+    #print("R cp", R)
+    cp = math.log((1 - R) / 0.91947, 0.91947)
+    #print("cp", cp)
+    #print("cp redondeo =", math.ceil(cp))
+    return math.ceil(cp)
+
+def generar_random_precision_cp():
+    R = generar_random()
+    if R < 0.1000 or R > 0.9999:
+        return generar_random_precision_cp()
+    else:
+        return round(R, 4)
+
+def generar_random_precision_ia():
+    R = generar_random()
+    if R < 0.01 or R > 0.99:
+        return generar_random_precision_ia()
+    else:
+        return round(R, 2)
 
 def generar_random():
     return random.uniform(0, 1)
@@ -75,14 +97,14 @@ class VariablesSimulacion():
 def imprimir_resultados(vars):
     print("Fin de la Simulación")
     print("Variables de control elegidas:")
-    print("CSI = {vars.CSI}")
-    print("CE = {vars.CE}")
-    print("TF = {vars.TF}")
+    print("CSI =", vars.CSI)
+    print("CE =", vars.CE)
+    print("TF =",vars.TF)
 
     print("Resultados:")
-    print("Porcentaje de muebles no vendidos = {vars.PMNV}%")
-    print("Porcentaje de clientes insatisfechos = {vars.PCLI}%")
-    print("Porcentaje de stock final respecto al inicial = {vars.PMSF}%")
+    print("Porcentaje de muebles no vendidos =", vars.PMNV, "%")
+    print("Porcentaje de clientes insatisfechos =", vars.PCLI, "%")
+    print("Porcentaje de stock final respecto al inicial =", vars.PMSF, "%")
 
 
 def ir_al_final(vars):
@@ -121,7 +143,7 @@ def avanzar_rama_llegada(vars):
             vars.CSA -= cant_muebles_pedidos
         else:
             vars.CLI += 1
-            vars.CMP -= cant_muebles_pedidos
+            vars.CMP += cant_muebles_pedidos
     else:
         vars.ARR += 1
     ir_al_final(vars)
