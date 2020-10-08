@@ -2,6 +2,7 @@ import random
 import math
 import sys
 
+
 sys.setrecursionlimit(90000)
 # --------------- FDPs ---------------
 
@@ -108,9 +109,9 @@ def imprimir_resultados(vars):
 
 
 def ir_al_final(vars):
-    if vars.T < vars.TF:
-        iniciar_simulacion(vars)
-    else:
+    #if vars.T < vars.TF:
+     #   iniciar_simulacion(vars)
+    #else:
         vars.PMNV = (vars.CMP / vars.CMT) * 100
         vars.PCLI = (vars.CLI / vars.CLT) * 100
         vars.PMSF = (vars.CSA / vars.CSI) * 100
@@ -125,7 +126,7 @@ def avanzar_rama_fin_fabric(vars, i):
     if vars.T != 0:
         vars.CSA += 1 #Sumo un mueble al stock actual, porque un empleado fabrica 1 mueble por TF
 
-    ir_al_final(vars)
+   # ir_al_final(vars)
 
 
 def avanzar_rama_llegada(vars):
@@ -146,18 +147,21 @@ def avanzar_rama_llegada(vars):
             vars.CMP += cant_muebles_pedidos
     else:
         vars.ARR += 1
-    ir_al_final(vars)
+   # ir_al_final(vars)
 
 def indice_menor_tpff(vars):
     return vars.TPFF.index(min(vars.TPFF))
 
 def iniciar_simulacion(vars):
-    i = indice_menor_tpff(vars)
+    while vars.T<vars.TF:
+        i = indice_menor_tpff(vars)
 
-    if vars.TPLL <= vars.TPFF[i]:
-        avanzar_rama_llegada(vars)
-    else:
-        avanzar_rama_fin_fabric(vars, i)
+        if vars.TPLL <= vars.TPFF[i]:
+            avanzar_rama_llegada(vars)
+
+        else:
+            avanzar_rama_fin_fabric(vars, i)
+    ir_al_final(vars)
 
 # --------------- FIN Funciones ---------------
 
@@ -170,11 +174,11 @@ if __name__ == '__main__':
     cant_empl = int(input("Ingrese la cantidad de empleados: "))
 
     # Ingresamos TF de simulación
-    tf_simulacion = int(input("Ingrese el tiempo final de simulación en minutos: "))
-
+    tf_simulacion =int(input("Ingrese el tiempo final de simulación en minutos: "))
+    #tf_simulacion=80000
+    #print(type(tf_simulacion))
     # Seteamos condiciones iniciales
     var_sim = VariablesSimulacion(cant_stock_inic, cant_empl, tf_simulacion)
-
     # Iniciamos simulación
     iniciar_simulacion(var_sim)
 
